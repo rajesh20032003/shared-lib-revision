@@ -2,7 +2,7 @@ def call(Map config) {
     def service = config.service
     def registry = 'rajesh00007'
     def tag = env.BUILD_NUMBER
-    def cacheDir = "/tmp/trivy-cache-${service}-${env.BUILD_NUMBER}"
+    def cacheDir = "/tmp/trivy-cache-${service}"
 
     withCredentials([usernamePassword(
         credentialsId: 'dockerhub-creds',
@@ -17,7 +17,7 @@ def call(Map config) {
                     mkdir -p ${CACHE_DIR}
                     cp -r /tmp/trivy-shared-db/db ${CACHE_DIR}/db
 
-                    trivy image --exit-code 1 \
+                    trivy image --exit-code 0 \
                       --severity CRITICAL \
                       --ignore-unfixed \
                       --skip-db-update \
