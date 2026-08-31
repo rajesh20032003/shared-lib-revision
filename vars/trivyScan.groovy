@@ -1,4 +1,4 @@
-def call (map config) {
+def call (Map config) {
   def service = config.service 
   def registry = 'rajesh00007'
   def tag = env.BUILD_NUMBER 
