@@ -1,15 +1,12 @@
-#dtrack upload
-def config(Map config) {
-  def service = config.service 
-  def registry = 'rajesh00007'
-  def tag = env.BUILD_NUMBER
+def call(Map config) {
+    def service = config.service
+    def tag = env.BUILD_NUMBER
+    def sbomFile = "artifacts/${service}/sbom.json"
 
- sh '''
- dependencyTrackPublisher(
-   artifact: "${service}:${tag}.json",
-   projectName: "${service}",
-   projectVersion: "${tag}",
-   synchronous: true
-   )
- '''
+    dependencyTrackPublisher(
+        artifact: sbomFile,
+        projectName: service,
+        projectVersion: tag,
+        synchronous: true
+    )
 }
