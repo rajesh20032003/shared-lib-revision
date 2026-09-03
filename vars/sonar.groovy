@@ -2,12 +2,14 @@ def call(Map config) {
     def service = config.service
     def sourcePath = "services/${service}"
     def projectKey = "monorepo-${service}"
+    def scannerHome = tool 'SonarScanner'   // must match the Name field exactly: "SonarScanner"
 
     withSonarQubeEnv('SonarQube') {
         withEnv([
             "SERVICE=${service}",
             "SOURCE_PATH=${sourcePath}",
-            "PROJECT_KEY=${projectKey}"
+            "PROJECT_KEY=${projectKey}",
+            "PATH+SONAR=${scannerHome}/bin"
         ]) {
             sh '''
                 sonar-scanner \
