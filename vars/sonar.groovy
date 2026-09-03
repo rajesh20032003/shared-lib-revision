@@ -3,7 +3,7 @@ def call(Map config) {
   def sourcepPath = "services/${service}"
   def projectKey = "monorepo-${service}"
   
-  withSonarQubeEnv('sonarqube') {
+  withSonarQubeEnv('SonarQube') {
     withEnv([
             "SERVICE=${service}",
             "SOURCE_PATH=${sourcePath}",
