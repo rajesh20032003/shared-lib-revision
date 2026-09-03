@@ -17,7 +17,7 @@ def call(Map config) {
                     mkdir -p ${CACHE_DIR}
                     cp -r /tmp/trivy-shared-db/db ${CACHE_DIR}/db
 
-                    trivy image --exit-code 0 \
+                    trivy image --exit-code 1 \
                       --severity CRITICAL \
                       --ignore-unfixed \
                       --skip-db-update \
