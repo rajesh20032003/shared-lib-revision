@@ -1,7 +1,8 @@
 def call(Map config) {
     def service = config.service
     def registry = 'rajesh00007'
-    def tag = env.BUILD_NUMBER
+    def shortSha = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+    def tag = "${env.BUILD_NUMBER}-${shortSha}"
     def cacheDir = "/tmp/trivy-cache-${service}"
 
     withCredentials([usernamePassword(

@@ -4,9 +4,10 @@ def call(Map config) {
     def registry = config.registry ?: 'rajesh00007'
     def platform = config.platform ?: 'linux/amd64'
     def push = config.containsKey('push') ? config.push : true
-    def tag = config.tag ?: env.BUILD_NUMBER
-    def builderName = "${service}-builder"
+    def shortSha = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+    def tag = "${env.BUILD_NUMBER}-${shortSha}"
     def imageRef = "${registry}/${service}:${tag}"
+    def builderName = "${service}-builder"
     def cacheRef = "${registry}/${service}:buildcache"
 
     withCredentials([usernamePassword(
