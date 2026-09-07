@@ -2,7 +2,7 @@ def call(Map config) {
     def service = config.service
     def tag = config.tag  // pass this in from the caller, since you're already computing it there
     def gitopsRepo = config.gitopsRepo ?: 'https://github.com/rajesh20032003/revision.git'
-    def gitopsDir = "gitops-${service}"
+    def gitopsDir = "helm-"
 
     withCredentials([usernamePassword(
         credentialsId: 'github-mb',
