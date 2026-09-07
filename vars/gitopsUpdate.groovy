@@ -17,7 +17,7 @@ def call(Map config) {
         ]) {
             sh '''
     rm -rf ${GITOPS_DIR}
-    git clone https://${GIT_USER}:${GIT_TOKEN}@$(echo ${GITOPS_REPO} | sed 's#https://##') ${GITOPS_DIR}
+    git clone https://rajesh20032003:${GIT_TOKEN}@$(echo ${GITOPS_REPO} | sed 's#https://##') ${GITOPS_DIR}
     cd ${GITOPS_DIR}/helm-
 
     yq -i '(.images[] | select(.name == env(SERVICE)) | .tag) = env(TAG)' values.yaml
