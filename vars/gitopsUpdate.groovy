@@ -19,7 +19,7 @@ def call(Map config) {
                 rm -rf ${GITOPS_DIR}
                 git clone https://${GIT_USER}:${GIT_TOKEN}@$(echo ${GITOPS_REPO} | sed 's#https://##') ${GITOPS_DIR}
                 cd ${GITOPS_DIR}
-
+                ls
                 yq -i "(.images[] | select(.name == \"${SERVICE}\") | .tag) = \"${TAG}\"" values.yaml
 
                 git config user.email "jenkins-ci@yourdomain.com"
