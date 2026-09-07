@@ -16,18 +16,18 @@ def call(Map config) {
             "GITOPS_REPO=${gitopsRepo}"
         ]) {
             sh '''
-                rm -rf ${GITOPS_DIR}
-                git clone https://${GIT_USER}:${GIT_TOKEN}@$(echo ${GITOPS_REPO} | sed 's#https://##') ${GITOPS_DIR}
-                cd ${GITOPS_DIR}/helm-
-                ls
-                yq -i "(.images[] | select(.name == \"${SERVICE}\") | .tag) = \"${TAG}\"" values.yaml
+    rm -rf ${GITOPS_DIR}
+    git clone https://${GIT_USER}:${GIT_TOKEN}@$(echo ${GITOPS_REPO} | sed 's#https://##') ${GITOPS_DIR}
+    cd ${GITOPS_DIR}/helm-
 
-                git config user.email "jenkins-ci@yourdomain.com"
-                git config user.name "jenkins-ci"
-                git add values.yaml
-                git commit -m "chore: update ${SERVICE} to ${TAG}" || echo "No changes to commit"
-                git push origin main
-            '''
+    yq -i '(.images[] | select(.name == env(SERVICE)) | .tag) = env(TAG)' values.yaml
+
+    git config user.email "jenkins-ci@yourdomain.com"
+    git config user.name "jenkins-ci"
+    git add values.yaml
+    git commit -m "chore: update ${SERVICE} to ${TAG}" || echo "No changes to commit"
+    git push origin main
+'''
         }
     }
 }
