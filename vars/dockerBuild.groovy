@@ -41,6 +41,8 @@ def call(Map config) {
                       --cache-to type=registry,ref=${CACHE_REF},mode=max \
                       --push \
                       ${CONTEXT}
+
+                    docker buildx rm ${BUILDER}
                 '''
             } finally {
                 sh 'docker logout'
