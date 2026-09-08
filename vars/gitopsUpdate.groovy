@@ -3,6 +3,7 @@ def call(Map config) {
     def tag = config.tag  // pass this in from the caller, since you're already computing it there
     def gitopsRepo = config.gitopsRepo ?: 'https://github.com/rajesh20032003/revision.git'
     def gitopsDir = "helm-"
+    def file = config.file 
 
     withCredentials([usernamePassword(
         credentialsId: 'gitops',
@@ -13,18 +14,19 @@ def call(Map config) {
             "SERVICE=${service}",
             "TAG=${tag}",
             "GITOPS_DIR=${gitopsDir}",
-            "GITOPS_REPO=${gitopsRepo}"
+            "GITOPS_REPO=${gitopsRepo}",
+            "FILE=${file}"
         ]) {
             sh '''
     rm -rf ${GITOPS_DIR}
     git clone https://${GIT_USER}:${GIT_TOKEN}@$(echo ${GITOPS_REPO} | sed 's#https://##') ${GITOPS_DIR}
     cd ${GITOPS_DIR}/helm-
 
-    yq -i '(.images[] | select(.name == env(SERVICE)) | .tag) = env(TAG)' values.yaml
+    yq -i '(.images[] | select(.name == env(SERVICE)) | .tag) = env(TAG)' ${FILE}
 
     git config user.email "jenkins-ci@yourdomain.com"
     git config user.name "jenkins-ci"
-    git add values.yaml
+    git add ${FILE}
     git commit -m "chore: update ${SERVICE} to ${TAG}" || echo "No changes to commit"
     git push origin main
 '''
